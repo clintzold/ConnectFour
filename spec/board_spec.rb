@@ -8,25 +8,25 @@ RSpec.describe Board do
       subject(:square_check) { described_class.new }
 
       it "return 49 objects from Square class" do
-        list = square_check.generate_squares
-        expect(list.length).to eq(49)
+        hash = square_check.generate_squares
+        expect(hash.length).to eq(49)
       end
 
-      it "returns a list of squares where each 'id' is an array containing two integers" do
-        list = square_check.generate_squares
+      it "returns a hash of squares where each key is an array containing two integers" do
+        hash = square_check.generate_squares
         is_two_integers = true
-        list.each do |item|
-          next unless item.id.length != 2 && item.id[0].is_a?(Integer) && item.id[1].is_a?(Integer)
+        hash.each do |key, value|
+          next unless key.length != 2 && key[0].is_a?(Integer) && key[1].is_a?(Integer)
           is_two_integers = false
         end
         expect(is_two_integers).to be true
       end
 
-      it "returns a list of squares where the integers of each 'id' are not more than 4" do
-        list = square_check.generate_squares
+      it "returns a hash of squares where the integers of each key are not more than 7" do
+        hash = square_check.generate_squares
         over_seven = false
-        list.each do |item|
-          next unless item.id[0] > 7 || item.id[1] > 7
+        hash.each do |key, value|
+          next unless key[0] > 7 || key[1] > 7
           over_seven = true
         end
         expect(over_seven).to be false
@@ -46,4 +46,19 @@ RSpec.describe Board do
       end
     end
   end
+
+  describe "#find_neighbours" do
+    context "when a Square is passed" do
+      subject(:gets_list) { described_class.new }
+
+      it "returns an array of eight items" do
+        array = gets_list.find_neighbours([0, 0])
+        expect(array.length).to eq(8)
+      end
+    end
+  end
+
+  describe "#game_over?" do
+  end
+
 end
