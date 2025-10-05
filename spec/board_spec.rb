@@ -35,30 +35,55 @@ RSpec.describe Board do
 
   end
 
-  describe "#get_square_by_id" do
-    context "when method is called" do
-        subject(:finds_square) { described_class.new }
+  describe "#make_array" do
+    context "When a hash is passed" do 
+      subject(:hash_to_array) { described_class.new }
 
-      it "returns an instance of class Squares" do
-        finds_square.squares = finds_square.generate_squares
-        square = finds_square.get_square_by_id([0, 0])
-        expect(square.instance_of?(Squares)).to be true
+      it "converts the hash into an array of squares" do 
+        hash = hash_to_array.squares
+        result = hash_to_array.make_array(hash)
+        expect(result[0]).to be_a Squares
+      end
+    end
+  end
+  
+  describe "#make_columns" do
+    context "when @squares collection is passed" do
+      subject(:game_columns) { described_class.new }
+
+      it "returns a hash of seven hashes" do
+        hash = game_columns.squares
+        result = game_columns.make_columns(hash)
+        expect(result.length).to eq(7)
       end
     end
   end
 
-  describe "#find_neighbours" do
-    context "when a Square is passed" do
-      subject(:gets_list) { described_class.new }
+  describe "#four_kind?" do
+    context "when an array of objects is passed" do
+      subject(:game_end) { described_class.new }
+      it "returns false when 4 objects have a matching value of '  ' " do
+        array = Array.new(4) { Squares.new }
+        expect(game_end.four_kind?(array)).to be false
+      end
 
-      it "returns an array of eight items" do
-        array = gets_list.find_neighbours([0, 0])
-        expect(array.length).to eq(8)
+      it "returns true when 4 adjacent objects have matching value that is not '  ' " do
+        array = Array.new(4) { Squares.new }
+        array.each {|square| square.mark = 'x'}
+        expect(game_end.four_kind?(array)).to be true
+      end
+
+      it "returns false when less than 4 adjacent objects have matching values" do
+        array = Array.new(4) { Squares.new }
+        array.each {|square| square.mark = 'x'}
+        array[0].mark = 'o'
+        expect(game_end.four_kind?(array)).to be false
       end
     end
   end
 
   describe "#game_over?" do
+
   end
 
 end
