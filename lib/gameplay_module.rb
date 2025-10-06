@@ -2,14 +2,11 @@
 
 module GamePlay
 
-  def print_intro_screen
-    puts "Welcome to Connect Four!\n\n"
-  end
-
   def play_game
     game = Board.new
     players = [Player.new('Player One', "\u26aa"), Player.new('Player Two', "\u26ab")]
     print_intro_screen
+    
     loop do
       draw_board(game) 
       choice = players[0].choose_column
@@ -17,8 +14,15 @@ module GamePlay
       break if check_board(game) || tie?(game)
       players.rotate!
     end
+
     draw_board(game)
-    winner(players[0])
+
+    if tie?(game)
+      puts "It's a draw!"
+    else
+      winner(players[0])
+    end
+
     if play_again?
       game = nil
       players.each{ |player| player = nil }
@@ -39,6 +43,10 @@ module GamePlay
     return if input == 'P' || input == 'Q'
     puts "Invalid choice!"
     play_again?
+  end
+  
+  def print_intro_screen
+    puts "Welcome to Connect Four!\n\n"
   end
 
   def draw_board(board)
@@ -72,10 +80,12 @@ module GamePlay
       group_to_check = collection.shift
       return true if check_selection(group_to_check)
     end
+    return false
   end
 
   def tie?(game)
-    game.squares.all?{ |key, square| square.mark != '  ' }
+    return true if game.squares.all?{ |key, square| square.mark != '  ' }
+    return false
   end
 
   def mark_square(column, player)

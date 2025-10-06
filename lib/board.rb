@@ -149,5 +149,4 @@ class Board
     return diagonal
   end
   
-
 end
