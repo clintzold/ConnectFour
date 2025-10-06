@@ -1,6 +1,7 @@
 #lib/board.rb
-require 'pry-byebug'
+
 require_relative 'gameplay_module'
+
 class Squares
   include GamePlay
   attr_accessor :id, :mark
@@ -150,6 +151,3 @@ class Board
   
 
 end
-game = Board.new
-binding.pry
-puts 'end'

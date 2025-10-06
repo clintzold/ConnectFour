@@ -1,7 +1,47 @@
 #lib/gameplay_module.rb
 
 module GamePlay
-  
+
+  def print_intro_screen
+    puts "Welcome to Connect Four!\n\n"
+  end
+
+  def draw_board(board)
+    col = board.columns
+    num = 1
+    row = 6
+    7.times do
+      while num <= 7
+        if num == 7
+          print "|#{col[num][row].mark}|"
+        else
+          print "|#{col[num][row].mark}"
+        end
+        num += 1
+      end
+      puts "\n"
+      if row == 0
+        22.times do
+          print "\u203e"
+        end
+        puts "\nPlayer One: \u26aa  Player Two: \u26ab"
+      end
+      row -= 1
+      num = 1
+    end
+  end
+
+  def mark_square(column, player)
+    column.each do |square|
+      if square.mark == '  '
+        square.mark = player.marker
+        return
+      end
+    end
+      puts "Column is full!"
+      choose_column(player)
+  end
+
   #Extracts 'mark' values from array of objects(prevents data loss during #four_kind? operation
   def create_mark_array(array)
     mark_array = []
