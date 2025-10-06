@@ -66,4 +66,4 @@ I also wrote much of this program using TDD. I found it very cumbersome but defi
 keeping things organized and giving me confidence to move on once a method had been thoroughly
 tested. 
 
-I will continue to master this skill until I can skilfully choose when to use it, and when not to.
+I will continue to master this skill until I can skilfully choose when to use it and when not to.
