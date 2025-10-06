@@ -3,9 +3,9 @@ CONNECT FOUR
 My version of the classic game, written in Ruby.
 
 Originally, I thought this game would be the same as Tic-Tac-Toe. There was
-one small difference however.
+one small difference however...
 
-The Challenge
+THE CHALLENGE
 
 In Tic-Tac-Toe, a win is determined by an edge-to-edge matchup of squares. You
 simply put the squares into an array, iterate through and compare every item to 
@@ -19,7 +19,7 @@ scan an entire slice of rows, columns or diagonals and see if they all match.
 Likewise, finding four or more of the same markers in a given array, does not 
 mean they are all adjacent to one another.
 
-My Solution
+MY SOLUTION
 
 Pseudocode
     - Check rows/columns/diagonals with a queue and a collector array.
@@ -63,7 +63,7 @@ Ruby Implementation
       end
 
 I also wrote much of this program using TDD. I found it very cumbersome but definitely helped with
-keeping things organized and giving me confidence to move on, once a method had been thoroughly
+keeping things organized and giving me confidence to move on once a method had been thoroughly
 tested. 
 
 I will continue to master this skill until I can skilfully choose when to use it, and when not to.
