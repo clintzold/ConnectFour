@@ -6,6 +6,41 @@ module GamePlay
     puts "Welcome to Connect Four!\n\n"
   end
 
+  def play_game
+    game = Board.new
+    players = [Player.new('Player One', "\u26aa"), Player.new('Player Two', "\u26ab")]
+    print_intro_screen
+    loop do
+      draw_board(game) 
+      choice = players[0].choose_column
+      mark_square(game.columns[choice], players[0])
+      break if check_board(game) || tie?(game)
+      players.rotate!
+    end
+    draw_board(game)
+    winner(players[0])
+    if play_again?
+      game = nil
+      players.each{ |player| player = nil }
+      play_game
+    end
+  end
+
+  def play_again?
+    puts "\n[P] - Play again"
+    puts "[Q] - Quit"
+    answer = gets.chomp.upcase
+    verify_play_again(answer)
+    return false if answer == 'Q'
+    return true if answer == 'P'
+  end
+
+  def verify_play_again(input)
+    return if input == 'P' || input == 'Q'
+    puts "Invalid choice!"
+    play_again?
+  end
+
   def draw_board(board)
     col = board.columns
     num = 1
@@ -31,6 +66,18 @@ module GamePlay
     end
   end
 
+  def check_board(game)
+    collection = [game.rows, game.make_array(game.columns), game.back_diagonals, game.forward_diagonals]
+    while !collection.empty?
+      group_to_check = collection.shift
+      return true if check_selection(group_to_check)
+    end
+  end
+
+  def tie?(game)
+    game.squares.all?{ |key, square| square.mark != '  ' }
+  end
+
   def mark_square(column, player)
     column.each do |square|
       if square.mark == '  '
@@ -39,7 +86,6 @@ module GamePlay
       end
     end
       puts "Column is full!"
-      choose_column(player)
   end
 
   #Extracts 'mark' values from array of objects(prevents data loss during #four_kind? operation
@@ -69,16 +115,13 @@ module GamePlay
     selection.each do |array|
       result = four_kind?(array)
       if result != false
-        mark = array.first
-        winner(mark)
+        return true
       end
     end
     return false
   end
 
-  def winner(mark)
-    puts "Player One wins!" if mark == 'X'
-    puts "Player Two wins!" if mark == 'O'
-    return true
+  def winner(player)
+    puts "#{player.name} wins!"  
   end
 end
