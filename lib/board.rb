@@ -1,6 +1,8 @@
 #lib/board.rb
 require 'pry-byebug'
+require_relative 'gameplay_module'
 class Squares
+  include GamePlay
   attr_accessor :id, :mark
 
     def initialize
@@ -15,11 +17,15 @@ class Squares
 end
 
 class Board
-  attr_accessor :squares, :columns
+  include GamePlay
+  attr_accessor :squares, :columns, :back_diagonals, :forward_diagonals, :rows
 
     def initialize
       @squares = generate_squares
       @columns = make_columns(@squares)
+      @back_diagonals = get_back_diagonals(@squares)
+      @forward_diagonals = get_forward_diagonals(@squares)
+      @rows = make_rows(@squares)
     end
 
   
@@ -65,8 +71,7 @@ class Board
   end
 
   def make_rows(squares)
-    rows = {}
-    row_num = 1
+    rows = []
     x = 0 
     y = 0
     row = []
@@ -75,9 +80,8 @@ class Board
       x += 1
       if x > 6
         y += 1
-        rows[row_num] = row
+        rows << row
         row = []
-        row_num += 1
         x = 0
       end
     end
@@ -85,19 +89,19 @@ class Board
   end
 
   def get_back_diagonals(squares)
-    diagonals = {}
+    diagonals = []
     diag_num = 1
     x = 3
     y = 0
     while x <= 6
-      diagonals[diag_num] = get_back_diagonals_helper(squares, x, y)
+      diagonals << get_back_diagonals_helper(squares, x, y)
       x += 1
       diag_num += 1
     end
     x = 6
     y = 1
     while y <= 3
-      diagonals[diag_num] = get_back_diagonals_helper(squares, x, y)
+      diagonals << get_back_diagonals_helper(squares, x, y)
       y += 1
       diag_num += 1
     end
@@ -115,19 +119,19 @@ class Board
   end
 
   def get_forward_diagonals(squares)
-    diagonals = {}
+    diagonals = []
     diag_num = 1
     x = 0
     y = 3
     while y >= 0
-      diagonals[diag_num] = get_forward_diagonals_helper(squares, x, y)
+      diagonals << get_forward_diagonals_helper(squares, x, y)
       y -= 1
       diag_num += 1
     end
     x = 1
     y = 0
     while x <= 3
-      diagonals[diag_num] = get_forward_diagonals_helper(squares, x, y)
+      diagonals << get_forward_diagonals_helper(squares, x, y)
       x += 1
       diag_num += 1
     end
@@ -144,27 +148,8 @@ class Board
     return diagonal
   end
   
-  def create_mark_array(array)
-    mark_array = []
-    array.each { |item| mark_array << item.mark }
-    return mark_array
-  end
-
-  def four_kind?(object_array)
-    array = create_mark_array(object_array)
-    matches = [array.shift] #Add first object to compare
-    while !array.empty?
-      curr = array.shift
-      last = matches.last
-      if curr == last
-        matches << curr
-      else
-        matches = [curr]
-      end
-      return true if matches.length == 4 && matches.first != '  '
-    end
-    return false
-  end
-
 
 end
+game = Board.new
+binding.pry
+puts 'end'
